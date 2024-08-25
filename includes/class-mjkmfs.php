@@ -49,8 +49,8 @@ class MJKMFS {
 
     private function define_admin_hooks() {
         $admin = new MJKMFS_Admin();
-        add_action( 'woocommerce_product_options_related', array( $admin, 'write_panel_tab' ) );
-        add_action( 'woocommerce_process_product_meta', array( $admin, 'process_extra_product_meta' ), 1, 2 );
+        add_action( 'woocommerce_product_options_related', array( $admin, 'mjkmfs_write_panel_tab' ) );
+        add_action( 'woocommerce_process_product_meta', array( $admin, 'mjkmfs_process_extra_product_meta' ), 1, 2 );
     }
 
     private function define_public_hooks() {
