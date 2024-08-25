@@ -41,6 +41,9 @@ if(is_woocommerce_active()) {
 				!defined('MJKMFS_ASSETS_URL') && define('MJKMFS_ASSETS_URL', MJKMFS_URL .'assets/');
 
 				$this->load_plugin_textdomain();
+
+				require_once( MJKMFS_PATH . 'includes/class-mjkmfs.php' );
+				MJKMFS::instance();
 			}
 
 			public function load_plugin_textdomain(){
