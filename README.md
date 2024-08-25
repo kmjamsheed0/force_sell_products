@@ -1,1 +1,1 @@
-# force_sell_products
+# woo-force-sells
