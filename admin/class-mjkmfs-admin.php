@@ -21,13 +21,13 @@ class MJKMFS_Admin {
         global $post;
         ?>
         <p class="form-field">
-            <label for="force_sell_ids"><?php _e( 'Optional Add-ons', 'woo-force-sells' ); ?></label>
+            <label for="mjkm_force_sell_ids"><?php _e( 'Optional Add-ons', 'woo-force-sells' ); ?></label>
             <?php
                 $product_ids = $this->mjkmfs_get_force_sell_ids( $post->ID, array( 'normal' ) );
                 $json_ids    = array();
 
                 if ( version_compare( WC_VERSION, '3.0', '>=' ) ) { ?>
-                    <select id="force_sell_ids" class="wc-product-search" multiple="multiple" style="width: 50%;" name="force_sell_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woo-force-sells' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-exclude="<?php echo intval( $post->ID ); ?>" data-exclude_type="variable">
+                    <select id="mjkm_force_sell_ids" class="wc-product-search" multiple="multiple" style="width: 50%;" name="mjkm_force_sell_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woo-force-sells' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-exclude="<?php echo intval( $post->ID ); ?>" data-exclude_type="variable">
 
                     <?php
                         foreach ( $product_ids as $product_id ) {
@@ -41,7 +41,7 @@ class MJKMFS_Admin {
                     <?php } ?>
                     </select>
             <?php } else { ?>
-                    <input type="hidden" class="wc-product-search" style="width: 50%;" id="force_sell_ids" name="force_sell_ids" data-placeholder="<?php _e( 'Search for a product&hellip;', 'woo-force-sells' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-multiple="true" data-selected="<?php
+                    <input type="hidden" class="wc-product-search" style="width: 50%;" id="mjkm_force_sell_ids" name="mjkm_force_sell_ids" data-placeholder="<?php _e( 'Search for a product&hellip;', 'woo-force-sells' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-multiple="true" data-selected="<?php
                     foreach ( $product_ids as $product_id ) {
                         $product = wc_get_product( $product_id );
 
@@ -60,13 +60,13 @@ class MJKMFS_Admin {
             <?php echo wc_help_tip( __( 'Add-on product can be removed or its quantity edited independently of the main product in the cart.', 'woo-force-sells' ) ); ?>
         </p>
         <p class="form-field">
-            <label for="force_sell_synced_ids"><?php _e( 'Mandatory Add-ons', 'woo-force-sells' ); ?></label>
+            <label for="mjkm_force_sell_synced_ids"><?php _e( 'Mandatory Add-ons', 'woo-force-sells' ); ?></label>
             <?php
                 $product_ids = $this->mjkmfs_get_force_sell_ids( $post->ID, array( 'synced' ) );
                 $json_ids    = array();
 
-                if ( version_compare( WC_VERSION, '3.0', '>=' ) ) { ?>
-                    <select id="force_sell_synced_ids" class="wc-product-search" multiple="multiple" style="width: 50%;" name="force_sell_synced_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woo-force-sells' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-exclude="<?php echo intval( $post->ID ); ?>" data-exclude_type="variable">
+                if ( version_compare( WC_VERSION, '5.0', '>=' ) ) { ?>
+                    <select id="mjkm_force_sell_synced_ids" class="wc-product-search" multiple="multiple" style="width: 50%;" name="mjkm_force_sell_synced_ids[]" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woo-force-sells' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-exclude="<?php echo intval( $post->ID ); ?>" data-exclude_type="variable">
 
                     <?php
                         foreach ( $product_ids as $product_id ) {
@@ -80,7 +80,7 @@ class MJKMFS_Admin {
                     <?php } ?>
                     </select>
             <?php } else { ?>
-                <input type="hidden" class="wc-product-search" style="width: 50%;" id="force_sell_synced_ids" name="force_sell_synced_ids" data-placeholder="<?php _e( 'Search for a product&hellip;', 'woo-force-sells' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-multiple="true" data-selected="<?php
+                <input type="hidden" class="wc-product-search" style="width: 50%;" id="mjkm_force_sell_synced_ids" name="mjkm_force_sell_synced_ids" data-placeholder="<?php _e( 'Search for a product&hellip;', 'woo-force-sells' ); ?>" data-action="woocommerce_json_search_products_and_variations" data-multiple="true" data-selected="<?php
                 foreach ( $product_ids as $product_id ) {
                     $product = wc_get_product( $product_id );
 
@@ -133,7 +133,30 @@ class MJKMFS_Admin {
     }
 
     public function mjkmfs_process_extra_product_meta( $post_id, $post ) {
-        // Code for processing the Force Sell meta fields when the product is saved.
+        foreach ( $this->synced_types as $key => $value ) {
+            if ( isset( $_POST[ $value['field_name'] ] ) ) {
+                $force_sells = array();
+                $ids         = $_POST[ $value['field_name'] ];
+
+                if ( version_compare( WC_VERSION, '3.0.0', '>=' ) && is_array( $ids ) ) {
+                    $ids = array_filter( array_map( 'absint', $ids ) );
+
+                } else {
+                    $ids = explode( ',', $ids );
+                    $ids = array_filter( $ids );
+                }
+
+                foreach ( $ids as $id ) {
+                    if ( $id && $id > 0 ) {
+                        $force_sells[] = $id;
+                    }
+                }
+
+                update_post_meta( $post_id, $value['meta_name'], $force_sells );
+            } else {
+                delete_post_meta( $post_id, $value['meta_name'] );
+            }
+        }
     }
 }
 endif;
