@@ -18,17 +18,6 @@ class MJKMFS {
     
     private static $instance = null;
 
-    private $synced_types = array(
-        'normal' => array(
-            'field_name' => 'force_sell_ids',
-            'meta_name'  => '_force_sell_ids',
-        ),
-        'synced' => array(
-            'field_name' => 'force_sell_synced_ids',
-            'meta_name'  => '_force_sell_synced_ids',
-        ),
-    );
-
     private function __construct() {
         $this->load_dependencies();
         $this->define_admin_hooks();
@@ -43,6 +32,7 @@ class MJKMFS {
     }
 
     private function load_dependencies() {
+        require_once MJKMFS_PATH . 'includes/utils/class-mjkmfs-utils.php';
         require_once MJKMFS_PATH . 'admin/class-mjkmfs-admin.php';
         require_once MJKMFS_PATH . 'public/class-mjkmfs-public.php';
     }
@@ -55,7 +45,12 @@ class MJKMFS {
 
     private function define_public_hooks() {
         $public = new MJKMFS_Public();
-        add_action( 'woocommerce_after_add_to_cart_button', array( $public, 'show_force_sell_products' ) );
+        //Product display related hooks:
+        $prd_display_hp = apply_filters('mjkmfs_products_display_hook_priority', 10);
+        $prd_display_hn = apply_filters('mjkmfs_products_display_hook_name', 'woocommerce_before_add_to_cart_button');
+
+        add_action( $prd_display_hn, array( $public, 'mjkmfs_show_force_sell_products' ), $prd_display_hp );
+
         add_action( 'woocommerce_add_to_cart', array( $public, 'add_force_sell_items_to_cart' ), 11, 6 );
         add_action( 'woocommerce_after_cart_item_quantity_update', array( $public, 'update_force_sell_quantity_in_cart' ), 1, 2 );
         add_action( 'woocommerce_remove_cart_item', array( $public, 'update_force_sell_quantity_in_cart' ), 1, 1 );

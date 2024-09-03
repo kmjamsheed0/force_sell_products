@@ -23,7 +23,7 @@ class MJKMFS_Admin {
         <p class="form-field">
             <label for="mjkm_force_sell_ids"><?php _e( 'Optional Add-ons', 'woo-force-sells' ); ?></label>
             <?php
-                $product_ids = $this->mjkmfs_get_force_sell_ids( $post->ID, array( 'normal' ) );
+                $product_ids = MJKMFS_Utils::mjkmfs_get_force_sell_ids( $post->ID, array( 'normal' ) );
                 $json_ids    = array();
 
                 if ( version_compare( WC_VERSION, '3.0', '>=' ) ) { ?>
@@ -62,7 +62,7 @@ class MJKMFS_Admin {
         <p class="form-field">
             <label for="mjkm_force_sell_synced_ids"><?php _e( 'Mandatory Add-ons', 'woo-force-sells' ); ?></label>
             <?php
-                $product_ids = $this->mjkmfs_get_force_sell_ids( $post->ID, array( 'synced' ) );
+                $product_ids = MJKMFS_Utils::mjkmfs_get_force_sell_ids( $post->ID, array( 'synced' ) );
                 $json_ids    = array();
 
                 if ( version_compare( WC_VERSION, '5.0', '>=' ) ) { ?>
@@ -102,43 +102,13 @@ class MJKMFS_Admin {
         <?php
     }
 
-    /**
-     * Get force sell IDs from a given product ID and force sell type(s).
-     *
-     * @param int   $product_id Product ID.
-     * @param array $types      Force sell types (normal and/or synched).
-     *
-     * @return array Force sell IDs.
-     */
-    private function mjkmfs_get_force_sell_ids( $product_id, $types ) {
-        if ( ! is_array( $types ) || empty( $types ) ) {
-            return array();
-        }
-
-        $ids = array();
-
-        foreach ( $types as $type ) {
-            $new_ids = array();
-
-            if ( isset( $this->synced_types[ $type ] ) ) {
-                $new_ids = get_post_meta( $product_id, $this->synced_types[ $type ]['meta_name'], true );
-
-                if ( is_array( $new_ids ) && ! empty( $new_ids ) ) {
-                    $ids = array_merge( $ids, $new_ids );
-                }
-            }
-        }
-
-        return $ids;
-    }
-
     public function mjkmfs_process_extra_product_meta( $post_id, $post ) {
-        foreach ( $this->synced_types as $key => $value ) {
+        foreach (  MJKMFS_Utils::get_synced_types() as $key => $value ) {
             if ( isset( $_POST[ $value['field_name'] ] ) ) {
                 $force_sells = array();
                 $ids         = $_POST[ $value['field_name'] ];
 
-                if ( version_compare( WC_VERSION, '3.0.0', '>=' ) && is_array( $ids ) ) {
+                if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $ids ) ) {
                     $ids = array_filter( array_map( 'absint', $ids ) );
 
                 } else {

@@ -16,8 +16,56 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(!class_exists('MJKMFS_Public')) :
 class MJKMFS_Public {
 
-    public function show_force_sell_products() {
-        // Code to display Force Sell products on the product page.
+    /**
+     * Display the add-ons products list
+     * 
+     * 
+     */
+    public function mjkmfs_show_force_sell_products() {
+        global $post;
+
+        $product_ids = MJKMFS_Utils::mjkmfs_get_force_sell_ids( $post->ID, array( 'normal', 'synced' ) );
+        $titles      = array();
+
+        //Check Product exist or not and avoid duplicate ids.
+        foreach ( array_values( array_unique( $product_ids ) ) as $key => $product_id ) {
+            $product = wc_get_product( $product_id );
+
+            if ( $product && $product->exists() && 'trash' !== $product->get_status() ) {
+                $titles[] = version_compare( WC_VERSION, '3.0', '>=' ) ? $product->get_title() : get_the_title( $product_id );
+            }
+        }
+
+        if ( ! empty( $titles ) ) {
+            // Get the view type from the settings (default to 'list')
+            $view_type = apply_filters( 'mjkmfs_products_list_view_type', 'list' ); // Default to 'list'.
+
+            echo '<div class="clear"></div>';
+            echo '<div class="mjkmfs-wc-force-sells">';
+            echo '<p>' . esc_html__( 'This will also add the following products to your cart:', 'woo-force-sells' ) . '</p>';
+
+            // Switch case to handle different view types
+            switch ( $view_type ) {
+                case 'grid':
+                    echo '<div class="mjkmfs-force-sells-grid">';
+                    foreach ( $titles as $title ) {
+                        echo '<div class="mjkmfs-force-sell-item">' . esc_html( $title ) . '</div>';
+                    }
+                    echo '</div>';
+                    break;
+
+                case 'list':
+                default:
+                    echo '<ul class="mjkmfs-force-sells-list">';
+                    foreach ( $titles as $title ) {
+                        echo '<li class="mjkmfs-force-sell-item">' . esc_html( $title ) . '</li>';
+                    }
+                    echo '</ul>';
+                    break;
+            }
+
+            echo '</div>';
+        }
     }
 
     public function add_force_sell_items_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data ) {
