@@ -103,14 +103,20 @@ class MJKMFS_Admin {
     }
 
     public function mjkmfs_process_extra_product_meta( $post_id, $post ) {
-        foreach (  MJKMFS_Utils::get_synced_types() as $key => $value ) {
+        // Load the product object.
+        $product = wc_get_product( $post_id );
+
+        if ( ! $product ) {
+            return; // Exit if the product is not found.
+        }
+
+        foreach ( MJKMFS_Utils::get_synced_types() as $key => $value ) {
             if ( isset( $_POST[ $value['field_name'] ] ) ) {
                 $force_sells = array();
                 $ids         = $_POST[ $value['field_name'] ];
 
                 if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $ids ) ) {
                     $ids = array_filter( array_map( 'absint', $ids ) );
-
                 } else {
                     $ids = explode( ',', $ids );
                     $ids = array_filter( $ids );
@@ -122,11 +128,16 @@ class MJKMFS_Admin {
                     }
                 }
 
-                update_post_meta( $post_id, $value['meta_name'], $force_sells );
+                // Update meta data.
+                $product->update_meta_data( $value['meta_name'], $force_sells );
+                $product->save();
             } else {
-                delete_post_meta( $post_id, $value['meta_name'] );
+                // Delete meta data.
+                $product->delete_meta_data( $value['meta_name'] );
+                $product->save();
             }
         }
     }
+
 }
 endif;

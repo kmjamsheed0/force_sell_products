@@ -51,13 +51,21 @@ class MJKMFS_Utils {
             return array();
         }
 
+        // Load the product object.
+        $product = wc_get_product( $product_id );
+
+        if ( ! $product ) {
+            return array(); // Exit if the product is not found.
+        }
+
         $ids = array();
 
         foreach ( $types as $type ) {
             $new_ids = array();
 
             if ( isset( self::$synced_types[ $type ] ) ) {
-                $new_ids = get_post_meta( $product_id, self::$synced_types[ $type ]['meta_name'], true );
+                // Get meta data.
+                $new_ids = $product->get_meta( self::$synced_types[ $type ]['meta_name'], true );
 
                 if ( is_array( $new_ids ) && ! empty( $new_ids ) ) {
                     $ids = array_merge( $ids, $new_ids );
