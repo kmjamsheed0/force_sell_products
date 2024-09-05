@@ -51,17 +51,17 @@ class MJKMFS {
 
         add_action( $prd_display_hn, array( $public, 'mjkmfs_show_force_sell_products' ), $prd_display_hp );
 
-        add_action( 'woocommerce_add_to_cart', array( $public, 'add_force_sell_items_to_cart' ), 11, 6 );
-        add_action( 'woocommerce_after_cart_item_quantity_update', array( $public, 'update_force_sell_quantity_in_cart' ), 1, 2 );
-        add_action( 'woocommerce_remove_cart_item', array( $public, 'update_force_sell_quantity_in_cart' ), 1, 1 );
-        add_filter( 'woocommerce_get_cart_item_from_session', array( $public, 'get_cart_item_from_session' ), 10, 2 );
-        add_filter( 'woocommerce_get_item_data', array( $public, 'get_linked_to_product_data' ), 10, 2 );
-        add_action( 'woocommerce_cart_loaded_from_session', array( $public, 'remove_orphan_force_sells' ) );
-        add_action( 'woocommerce_cart_loaded_from_session', array( $public, 'maybe_remove_duplicate_force_sells' ) );
-        add_filter( 'woocommerce_cart_item_remove_link', array( $public, 'cart_item_remove_link' ), 10, 2 );
-        add_filter( 'woocommerce_cart_item_quantity', array( $public, 'cart_item_quantity' ), 10, 2 );
-        add_action( 'woocommerce_cart_item_removed', array( $public, 'cart_item_removed' ), 30 );
-        add_action( 'woocommerce_cart_item_restored', array( $public, 'cart_item_restored' ), 30 );
+        add_action( 'woocommerce_add_to_cart', array( $public, 'mjkmfs_add_force_sell_items_to_cart' ), 11, 6 );
+        add_action( 'woocommerce_after_cart_item_quantity_update', array( $public, 'mjkmfs_update_force_sell_quantity_in_cart' ), 1, 2 );
+        add_action( 'woocommerce_remove_cart_item', array( $public, 'mjkmfs_update_force_sell_quantity_in_cart' ), 1, 1 );
+        add_filter( 'woocommerce_get_cart_item_from_session', array( $public, 'mjkmfs_get_cart_item_from_session' ), 10, 2 );
+        add_filter( 'woocommerce_get_item_data', array( $public, 'mjkmfs_get_linked_to_product_data' ), 10, 2 );
+        add_action( 'woocommerce_cart_loaded_from_session', array( $public, 'mjkmfs_remove_orphan_force_sells' ) );
+        add_action( 'woocommerce_cart_loaded_from_session', array( $public, 'mjkmfs_maybe_remove_duplicate_force_sells' ) );
+        add_filter( 'woocommerce_cart_item_remove_link', array( $public, 'mjkmfs_cart_item_remove_link' ), 10, 2 );
+        add_filter( 'woocommerce_cart_item_quantity', array( $public, 'mjkmfs_cart_item_quantity' ), 10, 2 );
+        add_action( 'woocommerce_cart_item_removed', array( $public, 'mjkmfs_cart_item_removed' ), 30 );
+        add_action( 'woocommerce_cart_item_restored', array( $public, 'mjkmfs_cart_item_restored' ), 30 );
     }
 }
 endif;

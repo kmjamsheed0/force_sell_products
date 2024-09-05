@@ -75,5 +75,21 @@ class MJKMFS_Utils {
 
         return $ids;
     }
+
+    /**
+     * Check if a given force sells ID is for a valid product.
+     *
+     * @param int $force_sell_id Force Sell ID.
+     * @return bool Whether the product is valid or not.
+     */
+    public static function mjkmfs_force_sell_is_valid( $force_sell_id ) {
+        $product = wc_get_product( $force_sell_id );
+
+        if ( ! $product || ! $product->exists() || 'trash' === $product->get_status() ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 endif;
