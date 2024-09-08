@@ -5,26 +5,26 @@
  * @author   Jamsheed KM
  * @since    1.0.0
  *
- * @package    woo-force-sells
- * @subpackage woo-force-sells/public
+ * @package    jkm-force-sells
+ * @subpackage jkm-force-sells/public
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-if(!class_exists('MJKMFS_Public')) :
-class MJKMFS_Public {
+if(!class_exists('JKMFS_Public')) :
+class JKMFS_Public {
 
     /**
      * Display the add-ons products list
      * 
      * 
      */
-    public function mjkmfs_show_force_sell_products() {
+    public function jkmfs_show_force_sell_products() {
         global $post;
 
-        $product_ids = MJKMFS_Utils::mjkmfs_get_force_sell_ids( $post->ID, array( 'normal', 'synced' ) );
+        $product_ids = JKMFS_Utils::jkmfs_get_force_sell_ids( $post->ID, array( 'normal', 'synced' ) );
         $titles      = array();
 
         //Check Product exist or not and avoid duplicate ids.
@@ -38,27 +38,27 @@ class MJKMFS_Public {
 
         if ( ! empty( $titles ) ) {
             // Get the view type from the settings (default to 'list')
-            $view_type = apply_filters( 'mjkmfs_products_list_view_type', 'list' ); // Default to 'list'.
+            $view_type = apply_filters( 'jkmfs_products_list_view_type', 'list' ); // Default to 'list'.
 
             echo '<div class="clear"></div>';
-            echo '<div class="mjkmfs-wc-force-sells">';
-            echo '<p>' . esc_html__( 'This will also add the following products to your cart:', 'woo-force-sells' ) . '</p>';
+            echo '<div class="jkmfs-wc-force-sells">';
+            echo '<p>' . esc_html__( 'This will also add the following products to your cart:', 'jkm-force-sells' ) . '</p>';
 
             // Switch case to handle different view types
             switch ( $view_type ) {
                 case 'grid':
-                    echo '<div class="mjkmfs-force-sells-grid">';
+                    echo '<div class="jkmfs-force-sells-grid">';
                     foreach ( $titles as $title ) {
-                        echo '<div class="mjkmfs-force-sell-item">' . esc_html( $title ) . '</div>';
+                        echo '<div class="jkmfs-force-sell-item">' . esc_html( $title ) . '</div>';
                     }
                     echo '</div>';
                     break;
 
                 case 'list':
                 default:
-                    echo '<ul class="mjkmfs-force-sells-list">';
+                    echo '<ul class="jkmfs-force-sells-list">';
                     foreach ( $titles as $title ) {
-                        echo '<li class="mjkmfs-force-sell-item">' . esc_html( $title ) . '</li>';
+                        echo '<li class="jkmfs-force-sell-item">' . esc_html( $title ) . '</li>';
                     }
                     echo '</ul>';
                     break;
@@ -80,7 +80,7 @@ class MJKMFS_Public {
      *
      * @throws Exception Notice message when the forced item is out of stock and parent isn't added.
      */
-    public function mjkmfs_add_force_sell_items_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data ) {
+    public function jkmfs_add_force_sell_items_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data ) {
         // Check if this product is forced in itself, so it can't force in others (to prevent adding in loops).
         if ( isset( WC()->cart->cart_contents[ $cart_item_key ]['forced_by'] ) ) {
             $forced_by_key = WC()->cart->cart_contents[ $cart_item_key ]['forced_by'];
@@ -97,8 +97,8 @@ class MJKMFS_Public {
 
         $product = wc_get_product( $product_id );
 
-        $force_sell_ids = array_filter( MJKMFS_Utils::mjkmfs_get_force_sell_ids( $product_id, array( 'normal', 'synced' ) ), array( 'MJKMFS_Utils', 'mjkmfs_force_sell_is_valid' ) );
-        $synced_ids     = array_filter( MJKMFS_Utils::mjkmfs_get_force_sell_ids( $product_id, array( 'synced' ) ), array( 'MJKMFS_Utils', 'mjkmfs_force_sell_is_valid' ) );
+        $force_sell_ids = array_filter( JKMFS_Utils::jkmfs_get_force_sell_ids( $product_id, array( 'normal', 'synced' ) ), array( 'JKMFS_Utils', 'jkmfs_force_sell_is_valid' ) );
+        $synced_ids     = array_filter( JKMFS_Utils::jkmfs_get_force_sell_ids( $product_id, array( 'synced' ) ), array( 'JKMFS_Utils', 'jkmfs_force_sell_is_valid' ) );
 
         if ( ! empty( $force_sell_ids ) ) {
             foreach ( $force_sell_ids as $id ) {
@@ -116,14 +116,14 @@ class MJKMFS_Public {
                         }
                     }
 
-                    $params = apply_filters( 'mjkmfs_force_sell_add_to_cart_product', array( 'id' => $id, 'quantity' => $quantity, 'variation_id' => '', 'variation' => '' ), WC()->cart->cart_contents[ $cart_item_key ] );
+                    $params = apply_filters( 'jkmfs_force_sell_add_to_cart_product', array( 'id' => $id, 'quantity' => $quantity, 'variation_id' => '', 'variation' => '' ), WC()->cart->cart_contents[ $cart_item_key ] );
                     $result = WC()->cart->add_to_cart( $params['id'], $params['quantity'], $params['variation_id'], $params['variation'], $args );
 
                     // If the forced sell product was not able to be added, don't add the main product either. "Can be filtered".
-                    if ( empty( $result ) && apply_filters( 'mjkmfs_force_sell_disallow_no_stock', true ) ) {
+                    if ( empty( $result ) && apply_filters( 'jkmfs_force_sell_disallow_no_stock', true ) ) {
                         WC()->cart->remove_cart_item( $cart_item_key );
                         /* translators: %s: Product title */
-                        throw new Exception( sprintf( __( '%s will also be removed as they\'re sold together.', 'woo-force-sells' ), $product->get_title() ) );
+                        throw new Exception( sprintf( __( '%s will also be removed as they\'re sold together.', 'jkm-force-sells' ), $product->get_title() ) );
                     }
                 }
             }
@@ -137,7 +137,7 @@ class MJKMFS_Public {
      * @param string $cart_item_key Cart item key.
      * @param int    $quantity      Quantity.
      */
-    public function mjkmfs_update_force_sell_quantity_in_cart( $cart_item_key, $quantity = 0 ) {
+    public function jkmfs_update_force_sell_quantity_in_cart( $cart_item_key, $quantity = 0 ) {
         if ( ! empty( WC()->cart->cart_contents[ $cart_item_key ] ) ) {
             if ( 0 === $quantity || 0 > $quantity ) {
                 $quantity = 0;
@@ -147,7 +147,7 @@ class MJKMFS_Public {
 
             foreach ( WC()->cart->cart_contents as $key => $value ) {
                 if ( isset( $value['forced_by'] ) && $cart_item_key === $value['forced_by'] ) {
-                    $quantity = apply_filters( 'mjkmfs_force_sell_update_quantity', $quantity, WC()->cart->cart_contents[ $key ] );
+                    $quantity = apply_filters( 'jkmfs_force_sell_update_quantity', $quantity, WC()->cart->cart_contents[ $key ] );
                     WC()->cart->set_quantity( $key, $quantity );
                 }
             }
@@ -162,7 +162,7 @@ class MJKMFS_Public {
      *
      * @return array Cart item.
      */
-    public function mjkmfs_get_cart_item_from_session( $cart_item, $values ) {
+    public function jkmfs_get_cart_item_from_session( $cart_item, $values ) {
        if ( isset( $values['forced_by'] ) ) {
             $cart_item['forced_by'] = $values['forced_by'];
         }
@@ -177,14 +177,14 @@ class MJKMFS_Public {
      *
      * @return array
      */
-    public function mjkmfs_get_linked_to_product_data( $data, $cart_item ) {
+    public function jkmfs_get_linked_to_product_data( $data, $cart_item ) {
         if ( isset( $cart_item['forced_by'] ) ) {
             $product_key = WC()->cart->find_product_in_cart( $cart_item['forced_by'] );
 
             if ( ! empty( $product_key ) ) {
                 $product_name = WC()->cart->cart_contents[ $product_key ]['data']->get_title();
                 $data[]       = array(
-                    'name'    => __( 'Linked to', 'woo-force-sells' ),
+                    'name'    => __( 'Linked to', 'jkm-force-sells' ),
                     'display' => $product_name,
                 );
             }
@@ -197,7 +197,7 @@ class MJKMFS_Public {
      * Looks to see if a product with the key of 'forced_by' actually exists and
      * deletes it if not.
      */
-    public function mjkmfs_remove_orphan_force_sells() {
+    public function jkmfs_remove_orphan_force_sells() {
         $cart_contents = WC()->cart->get_cart();
 
         foreach ( $cart_contents as $key => $value ) {
@@ -214,7 +214,7 @@ class MJKMFS_Public {
      * have duplicated force sell products.
      *
      */
-    public function mjkmfs_maybe_remove_duplicate_force_sells() {
+    public function jkmfs_maybe_remove_duplicate_force_sells() {
         $cart_contents = WC()->cart->get_cart();
         $product_ids   = array();
 
@@ -240,7 +240,7 @@ class MJKMFS_Public {
      *
      * @return string Link.
      */
-    public function mjkmfs_cart_item_remove_link( $link, $cart_item_key ) {
+    public function jkmfs_cart_item_remove_link( $link, $cart_item_key ) {
         if ( isset( WC()->cart->cart_contents[ $cart_item_key ]['forced_by'] ) ) {
             return '';
         }
@@ -256,7 +256,7 @@ class MJKMFS_Public {
      *
      * @return string Quantity input or static text of quantity.
      */
-    public function mjkmfs_cart_item_quantity( $quantity, $cart_item_key ) {
+    public function jkmfs_cart_item_quantity( $quantity, $cart_item_key ) {
         if ( isset( WC()->cart->cart_contents[ $cart_item_key ]['forced_by'] ) ) {
             return WC()->cart->cart_contents[ $cart_item_key ]['quantity'];
         }
@@ -270,7 +270,7 @@ class MJKMFS_Public {
      *
      * @param string $cart_item_key Cart item key.
      */
-    public function mjkmfs_cart_item_removed( $cart_item_key ) {
+    public function jkmfs_cart_item_removed( $cart_item_key ) {
         foreach ( WC()->cart->get_cart() as $key => $value ) {
             if ( isset( $value['forced_by'] ) && $cart_item_key === $value['forced_by'] ) {
                 WC()->cart->remove_cart_item( $key );
@@ -283,7 +283,7 @@ class MJKMFS_Public {
      *
      * @param string $cart_item_key Cart item key.
      */
-    public function mjkmfs_cart_item_restored( $cart_item_key ) {
+    public function jkmfs_cart_item_restored( $cart_item_key ) {
         foreach ( WC()->cart->removed_cart_contents as $key => $value ) {
             if ( isset( $value['forced_by'] ) && $cart_item_key === $value['forced_by'] ) {
                 WC()->cart->restore_cart_item( $key );

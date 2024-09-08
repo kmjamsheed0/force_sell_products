@@ -5,14 +5,14 @@
  * @author   Jamsheed KM
  * @since    1.0.0
  *
- * @package    woo-force-sells
- * @subpackage woo-force-sells/admin/utils
+ * @package    jkm-force-sells
+ * @subpackage jkm-force-sells/admin/utils
  */
 
 if(!defined('ABSPATH')){ exit; }
 
-if(!class_exists('MJKMFS_Utils')) :
-class MJKMFS_Utils {
+if(!class_exists('JKMFS_Utils')) :
+class JKMFS_Utils {
 
     /**
      * 
@@ -20,12 +20,12 @@ class MJKMFS_Utils {
      */
     private static $synced_types = array(
         'normal' => array(
-            'field_name' => 'mjkm_force_sell_ids',
-            'meta_name'  => 'mjkm_meta_force_sell_ids',
+            'field_name' => 'jkm_force_sell_ids',
+            'meta_name'  => 'jkm_meta_force_sell_ids',
         ),
         'synced' => array(
-            'field_name' => 'mjkm_force_sell_synced_ids',
-            'meta_name'  => 'mjkm_meta_force_sell_synced_ids',
+            'field_name' => 'jkm_force_sell_synced_ids',
+            'meta_name'  => 'jkm_meta_force_sell_synced_ids',
         ),
     );
 
@@ -46,7 +46,7 @@ class MJKMFS_Utils {
      *
      * @return array Force sell IDs.
      */
-    public static function mjkmfs_get_force_sell_ids( $product_id, $types ) {
+    public static function jkmfs_get_force_sell_ids( $product_id, $types ) {
         if ( ! is_array( $types ) || empty( $types ) ) {
             return array();
         }
@@ -82,7 +82,7 @@ class MJKMFS_Utils {
      * @param int $force_sell_id Force Sell ID.
      * @return bool Whether the product is valid or not.
      */
-    public static function mjkmfs_force_sell_is_valid( $force_sell_id ) {
+    public static function jkmfs_force_sell_is_valid( $force_sell_id ) {
         $product = wc_get_product( $force_sell_id );
 
         if ( ! $product || ! $product->exists() || 'trash' === $product->get_status() ) {

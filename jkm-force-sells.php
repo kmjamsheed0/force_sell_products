@@ -6,7 +6,7 @@
  * Version:     1.0.0
  * Author URI:  https://github.com/kmjamsheed0
  * Plugin URI:  https://github.com/kmjamsheed0
- * Text Domain: jkm-force-sell
+ * Text Domain: jkm-force-sells
  * Domain Path: /languages
  * WC requires at least: 4.0.0
  * WC tested up to: 9.2
@@ -25,34 +25,34 @@ if (!function_exists('is_woocommerce_active')){
 }
 
 if(is_woocommerce_active()) {
-	if(!class_exists('MJKM_Force_Sells_Products')){
-		class MJKM_Force_Sells_Products {
-			const TEXT_DOMAIN = 'jkm-force-sell';
+	if(!class_exists('JKM_Force_Sells_Products')){
+		class JKM_Force_Sells_Products {
+			const TEXT_DOMAIN = 'jkm-force-sells';
 
 			public function __construct(){
 				add_action('init', array($this, 'init'));
 			}
 
 			public function init() {
-				define('MJKMFS_VERSION', '1.0.0');
-				!defined('MJKMFS_BASE_NAME') && define('MJKMFS_BASE_NAME', plugin_basename( __FILE__ ));
-				!defined('MJKMFS_PATH') && define('MJKMFS_PATH', plugin_dir_path( __FILE__ ));
-				!defined('MJKMFS_URL') && define('MJKMFS_URL', plugins_url( '/', __FILE__ ));
-				!defined('MJKMFS_ASSETS_URL') && define('MJKMFS_ASSETS_URL', MJKMFS_URL .'assets/');
+				define('JKMFS_VERSION', '1.0.0');
+				!defined('JKMFS_BASE_NAME') && define('JKMFS_BASE_NAME', plugin_basename( __FILE__ ));
+				!defined('JKMFS_PATH') && define('JKMFS_PATH', plugin_dir_path( __FILE__ ));
+				!defined('JKMFS_URL') && define('JKMFS_URL', plugins_url( '/', __FILE__ ));
+				!defined('JKMFS_ASSETS_URL') && define('JKMFS_ASSETS_URL', JKMFS_URL .'assets/');
 
 				$this->load_plugin_textdomain();
 
-				require_once( MJKMFS_PATH . 'includes/class-mjkmfs.php' );
-				MJKMFS::instance();
+				require_once( JKMFS_PATH . 'includes/class-jkmfs.php' );
+				JKMFS::instance();
 			}
 
 			public function load_plugin_textdomain(){
 				$locale = apply_filters('plugin_locale', get_locale(), self::TEXT_DOMAIN);
 
-				load_textdomain(self::TEXT_DOMAIN, WP_LANG_DIR.'/jkm-force-sell/'.self::TEXT_DOMAIN.'-'.$locale.'.mo');
-				load_plugin_textdomain(self::TEXT_DOMAIN, false, dirname(MJKMFS_BASE_NAME) . '/languages/');
+				load_textdomain(self::TEXT_DOMAIN, WP_LANG_DIR.'/jkm-force-sells/'.self::TEXT_DOMAIN.'-'.$locale.'.mo');
+				load_plugin_textdomain(self::TEXT_DOMAIN, false, dirname(JKMFS_BASE_NAME) . '/languages/');
 			}
 		}
 	}
-	new MJKM_Force_Sells_Products();
+	new JKM_Force_Sells_Products();
 }
