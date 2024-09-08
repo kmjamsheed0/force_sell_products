@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: WooCommerce Force Sells | Smart Bundles
- * Description: Allows you to select products that will be used as force-sells—items automatically added to the cart along with the main item.
+ * Plugin Name: Force Sell For WooCommerce | Smart Cart Bundles
+ * Description: Automatically add selected products to the cart with a main item, creating smart bundles effortlessly.
  * Author:      Jamsheed KM
  * Version:     1.0.0
  * Author URI:  https://github.com/kmjamsheed0
  * Plugin URI:  https://github.com/kmjamsheed0
- * Text Domain: woo-force-sells
+ * Text Domain: jkm-force-sell
  * Domain Path: /languages
  * WC requires at least: 4.0.0
  * WC tested up to: 9.2
@@ -27,7 +27,7 @@ if (!function_exists('is_woocommerce_active')){
 if(is_woocommerce_active()) {
 	if(!class_exists('MJKM_Force_Sells_Products')){
 		class MJKM_Force_Sells_Products {
-			const TEXT_DOMAIN = 'woo-force-sells';
+			const TEXT_DOMAIN = 'jkm-force-sell';
 
 			public function __construct(){
 				add_action('init', array($this, 'init'));
@@ -49,7 +49,7 @@ if(is_woocommerce_active()) {
 			public function load_plugin_textdomain(){
 				$locale = apply_filters('plugin_locale', get_locale(), self::TEXT_DOMAIN);
 
-				load_textdomain(self::TEXT_DOMAIN, WP_LANG_DIR.'/woo-force-sells/'.self::TEXT_DOMAIN.'-'.$locale.'.mo');
+				load_textdomain(self::TEXT_DOMAIN, WP_LANG_DIR.'/jkm-force-sell/'.self::TEXT_DOMAIN.'-'.$locale.'.mo');
 				load_plugin_textdomain(self::TEXT_DOMAIN, false, dirname(MJKMFS_BASE_NAME) . '/languages/');
 			}
 		}
