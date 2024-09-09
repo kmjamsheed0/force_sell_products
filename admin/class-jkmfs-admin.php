@@ -19,6 +19,8 @@ class JKMFS_Admin {
     public function jkmfs_write_panel_tab() {
         
         global $post;
+        // Add nonce field for security
+        wp_nonce_field( 'jkmfs_save_product_meta', 'jkmfs_product_meta_nonce' );
         ?>
         <p class="form-field">
             <label for="jkm_force_sell_ids"><?php _e( 'Optional Add-ons', 'jkm-force-sells' ); ?></label>
@@ -57,7 +59,7 @@ class JKMFS_Admin {
                     echo $json_ids_data;
                     ?>" value="<?php echo implode( ',', array_keys( $json_ids ) ); ?>" />
             <?php } ?>
-            <?php echo wc_help_tip( __( 'Add-on product can be removed or its quantity edited independently of the main product in the cart.', 'jkm-force-sells' ) ); ?>
+            <?php echo wc_help_tip( __( 'This product can be removed or its quantity changed independently, without affecting the main item in the cart.', 'jkm-force-sells' ) ); ?>
         </p>
         <p class="form-field">
             <label for="jkm_force_sell_synced_ids"><?php _e( 'Mandatory Add-ons', 'jkm-force-sells' ); ?></label>
@@ -103,6 +105,10 @@ class JKMFS_Admin {
     }
 
     public function jkmfs_process_extra_product_meta( $post_id, $post ) {
+        // Verify the nonce
+        if ( ! isset( $_POST['jkmfs_product_meta_nonce'] ) || ! wp_verify_nonce( $_POST['jkmfs_product_meta_nonce'], 'jkmfs_save_product_meta' ) ) {
+            return; // Exit if the nonce is invalid.
+        }
         // Load the product object.
         $product = wc_get_product( $post_id );
 
@@ -113,13 +119,14 @@ class JKMFS_Admin {
         foreach ( JKMFS_Utils::get_synced_types() as $key => $value ) {
             if ( isset( $_POST[ $value['field_name'] ] ) ) {
                 $force_sells = array();
-                $ids         = $_POST[ $value['field_name'] ];
+                // Unslash and sanitize the IDs
+                $ids = wp_unslash( $_POST[ $value['field_name'] ] );
 
                 if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $ids ) ) {
                     $ids = array_filter( array_map( 'absint', $ids ) );
                 } else {
                     $ids = explode( ',', $ids );
-                    $ids = array_filter( $ids );
+                    $ids = array_filter( array_map( 'absint', $ids ) );
                 }
 
                 foreach ( $ids as $id ) {

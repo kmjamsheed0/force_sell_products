@@ -94,6 +94,7 @@ class JKMFS {
             submit_button();
             ?>
         </form>
+        </div>
         <?php
     }
 
