@@ -18,7 +18,7 @@ class JKMFS_Public {
 
 
     public function enqueue_public_styles_and_scripts() {
-        $debug_mode = apply_filters('jkmfs_debug_mode', true);
+        $debug_mode = apply_filters('jkmfs_debug_mode', false);
         $suffix = $debug_mode ? '' : '.min';
 
         $this->enqueue_styles($suffix);

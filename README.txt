@@ -44,12 +44,12 @@ The plugin is highly developer-friendly, allowing you to easily add more functio
 
 1. Upload the plugin files to the `/wp-content/plugins/jkm-force-sells` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Configure the settings under WooCommerce -> Settings -> Force Sell.
+3. Configure the settings under Products -> Force Sell Settings.
 
 == Frequently Asked Questions ==
 
 = How do I configure the display settings? =
-You can configure the display settings by navigating to WooCommerce -> Settings -> Force Sell. Here, you can choose the display style, position, and image options.
+You can configure the display settings by navigating to Products -> Force Sell Settings. Here, you can choose the display style, position, and image options.
 
 = Can I add both optional and mandatory add-ons to a product? =
 Yes, the plugin allows you to add both optional and mandatory add-ons to a main product. Mandatory add-ons will always sync with the main product’s quantity.
@@ -60,7 +60,10 @@ Yes, the plugin is highly developer-friendly, providing hooks and filters to ext
 == Changelog ==
 
 = 1.0.0 =
-* Initial release with force-sell functionality, display customization, and developer hooks.
+* Initial release
+* Force-sell functionality to automatically add products to the cart.
+* Display customization options for force-sell products.
+* Developer hooks for extended customization and integration.
 
 == Upgrade Notice ==
 

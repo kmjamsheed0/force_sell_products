@@ -1,2 +1,6 @@
 .* export-ignore  
 pipelines.yml export-ignore
+Gruntfile.js export-ignore
+package.json export-ignore
+admin/assets/css/jkmfs-admin.css export-ignore
+public/assets/css/jkmfs-public.css export-ignore

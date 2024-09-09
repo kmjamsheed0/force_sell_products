@@ -1,2 +1,6 @@
 .*
 pipelines.yml
+Gruntfile.js
+package.json
+admin/assets/css/jkmfs-admin.css
+public/assets/css/jkmfs-public.css
