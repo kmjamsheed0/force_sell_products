@@ -91,5 +91,15 @@ class JKMFS_Utils {
             return true;
         }
     }
+
+    public static function jkmfs_capability() {
+        $allowed = array('manage_woocommerce', 'manage_options');
+        $capability = apply_filters('jkmfs_required_capability', 'manage_woocommerce');
+
+        if(!in_array($capability, $allowed)){
+            $capability = 'manage_woocommerce';
+        }
+        return $capability;
+    }
 }
 endif;

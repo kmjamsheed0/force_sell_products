@@ -16,6 +16,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(!class_exists('JKMFS_Public')) :
 class JKMFS_Public {
 
+
+    public function enqueue_public_styles_and_scripts() {
+        $debug_mode = apply_filters('jkmfs_debug_mode', true);
+        $suffix = $debug_mode ? '' : '.min';
+
+        $this->enqueue_styles($suffix);
+    }
+    
+    private function enqueue_styles($suffix) {
+        wp_enqueue_style('jkmfs-public-style', JKMFS_URL . 'public/assets/css/jkmfs-public'. $suffix .'.css', JKMFS_VERSION);
+    }
+
     /**
      * Display the add-ons products list
      * 
@@ -24,32 +36,48 @@ class JKMFS_Public {
     public function jkmfs_show_force_sell_products() {
         global $post;
 
-        $product_ids = JKMFS_Utils::jkmfs_get_force_sell_ids( $post->ID, array( 'normal', 'synced' ) );
-        $titles      = array();
+        // Get force-sell product IDs associated with the current product
+        $product_ids = JKMFS_Utils::jkmfs_get_force_sell_ids($post->ID, array('normal', 'synced'));
+        $product_datas = array();
 
-        //Check Product exist or not and avoid duplicate ids.
-        foreach ( array_values( array_unique( $product_ids ) ) as $key => $product_id ) {
-            $product = wc_get_product( $product_id );
+        // Check if products exist and avoid duplicate IDs
+        foreach (array_values(array_unique($product_ids)) as $product_id) {
+            $product = wc_get_product($product_id);
 
-            if ( $product && $product->exists() && 'trash' !== $product->get_status() ) {
-                $titles[] = version_compare( WC_VERSION, '3.0', '>=' ) ? $product->get_title() : get_the_title( $product_id );
+            // Ensure product exists and is not trashed
+            if ($product && $product->exists() && 'trash' !== $product->get_status()) {
+                $product_datas[$product_id] = array(
+                    'title' => $product->get_name(), // Get product name
+                    'image' => $product->get_image() // Get product image
+                );
             }
         }
 
-        if ( ! empty( $titles ) ) {
-            // Get the view type from the settings (default to 'list')
-            $view_type = apply_filters( 'jkmfs_products_list_view_type', 'list' ); // Default to 'list'.
+        if (!empty($product_datas)) {
+            // Get settings
+            $options = get_option('jkmfs_settings');
+            $view_type = isset($options['display_type']) ? $options['display_type'] : 'list';
+            $show_images = isset($options['show_images']) ? $options['show_images'] : 'no';
+
+            // Apply filters to allow customization of these settings
+            $view_type = apply_filters('jkmfs_products_display_type', $view_type);
+            $show_images = apply_filters('jkmfs_show_products_images', $show_images);
 
             echo '<div class="clear"></div>';
             echo '<div class="jkmfs-wc-force-sells">';
-            echo '<p>' . esc_html__( 'This will also add the following products to your cart:', 'jkm-force-sells' ) . '</p>';
+            echo '<p>' . esc_html__('The following product(s) will also be added to your cart:', 'jkm-force-sells') . '</p>';
 
             // Switch case to handle different view types
-            switch ( $view_type ) {
+            switch ($view_type) {
                 case 'grid':
                     echo '<div class="jkmfs-force-sells-grid">';
-                    foreach ( $titles as $title ) {
-                        echo '<div class="jkmfs-force-sell-item">' . esc_html( $title ) . '</div>';
+                    foreach ($product_datas as $data) {
+                        echo '<div class="jkmfs-force-sell-item">';
+                        if ($show_images === 'yes' && $data['image']) {
+                            echo '<div class="jkmfs-force-sell-image">' . $data['image'] . '</div>';
+                        }
+                        echo '<div class="jkmfs-force-sell-title">' . esc_html($data['title']) . '</div>'; // Title below image
+                        echo '</div>';
                     }
                     echo '</div>';
                     break;
@@ -57,8 +85,13 @@ class JKMFS_Public {
                 case 'list':
                 default:
                     echo '<ul class="jkmfs-force-sells-list">';
-                    foreach ( $titles as $title ) {
-                        echo '<li class="jkmfs-force-sell-item">' . esc_html( $title ) . '</li>';
+                    foreach ($product_datas as $data) {
+                        echo '<li class="jkmfs-force-sell-item">';
+                        if ($show_images === 'yes' && $data['image']) {
+                            echo '<div class="jkmfs-force-sell-image">' . $data['image'] . '</div>';
+                        }
+                        echo '<div class="jkmfs-force-sell-title">' . esc_html($data['title']) . '</div>'; // Title next to image
+                        echo '</li>';
                     }
                     echo '</ul>';
                     break;
@@ -67,6 +100,7 @@ class JKMFS_Public {
             echo '</div>';
         }
     }
+
 
     /**
      * Add linked products when current product is added to the cart.

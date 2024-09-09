@@ -17,11 +17,14 @@ if(!class_exists('JKMFS')) :
 class JKMFS {
     
     private static $instance = null;
+    private $screen_id;
 
     private function __construct() {
         $this->load_dependencies();
         $this->define_admin_hooks();
         $this->define_public_hooks();
+        add_action('admin_menu', array($this, 'jkmfs_admin_menu'));
+        add_action('admin_init', array($this, 'jkmfs_register_settings'));
     }
 
     public static function instance() {
@@ -45,9 +48,16 @@ class JKMFS {
 
     private function define_public_hooks() {
         $public = new JKMFS_Public();
+
+        add_action('wp_enqueue_scripts', array($public, 'enqueue_public_styles_and_scripts'));
+
+        // Retrieve settings from the database
+        $options = get_option('jkmfs_settings');
+        $hook_name = isset($options['display_position']) ? $options['display_position'] : 'woocommerce_before_add_to_cart_button';
+
         //Product display related hooks:
+        $prd_display_hn = apply_filters('jkmfs_products_display_hook_name', $hook_name);        
         $prd_display_hp = apply_filters('jkmfs_products_display_hook_priority', 10);
-        $prd_display_hn = apply_filters('jkmfs_products_display_hook_name', 'woocommerce_before_add_to_cart_button');
 
         add_action( $prd_display_hn, array( $public, 'jkmfs_show_force_sell_products' ), $prd_display_hp );
 
@@ -62,6 +72,99 @@ class JKMFS {
         add_filter( 'woocommerce_cart_item_quantity', array( $public, 'jkmfs_cart_item_quantity' ), 10, 2 );
         add_action( 'woocommerce_cart_item_removed', array( $public, 'jkmfs_cart_item_removed' ), 30 );
         add_action( 'woocommerce_cart_item_restored', array( $public, 'jkmfs_cart_item_restored' ), 30 );
+    }
+
+    public function jkmfs_admin_menu() {
+        $capability = JKMFS_Utils::jkmfs_capability();
+        $this->screen_id = add_submenu_page('edit.php?post_type=product', __('Force Sell Settings', 'jkm-force-sells'),
+        __('Force Sell Settings', 'jkm-force-sells'), $capability, 'jkmfs_force_sell_settings', array($this, 'output_settings'));
+    }
+
+    public function output_settings() {
+        if (!current_user_can('manage_options')) {
+            wp_die( __( 'You do not have sufficient permissions to access this page.','jkm-force-sells'));
+        }
+        echo '<div class="wrap">';
+        echo '<h2>' . esc_html__('Force Sell Settings', 'jkm-force-sells') . '</h2>';
+        ?>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields('jkmfs_force_sell_settings_group');
+            do_settings_sections('jkmfs_force_sell_settings');
+            submit_button();
+            ?>
+        </form>
+        <?php
+    }
+
+    public function jkmfs_register_settings() {
+        register_setting('jkmfs_force_sell_settings_group', 'jkmfs_settings');
+
+        add_settings_section(
+            'jkmfs_display_settings',
+            __('Display Settings', 'jkm-force-sells'),
+            array($this, 'jkmfs_display_settings_section_callback'),
+            'jkmfs_force_sell_settings'
+        );
+
+        add_settings_field(
+            'jkmfs_display_position',
+            __('Display Position', 'jkm-force-sells'),
+            array($this, 'jkmfs_display_position_field_callback'),
+            'jkmfs_force_sell_settings',
+            'jkmfs_display_settings'
+        );
+
+        add_settings_field(
+            'jkmfs_display_type',
+            __('Display Type', 'jkm-force-sells'),
+            array($this, 'jkmfs_display_type_field_callback'),
+            'jkmfs_force_sell_settings',
+            'jkmfs_display_settings'
+        );
+
+        add_settings_field(
+            'jkmfs_show_images',
+            __('Show Product Images', 'jkm-force-sells'),
+            array($this, 'jkmfs_show_images_field_callback'),
+            'jkmfs_force_sell_settings',
+            'jkmfs_display_settings'
+        );
+    }
+
+    public function jkmfs_display_settings_section_callback() {
+        echo '<p>' . esc_html__('Configure the display settings for force-sell products.', 'jkm-force-sells') . '</p>';
+    }
+
+    public function jkmfs_display_position_field_callback() {
+        $options = get_option('jkmfs_settings');
+        $position = isset($options['display_position']) ? $options['display_position'] : 'woocommerce_before_add_to_cart_button';
+        ?>
+        <select name="jkmfs_settings[display_position]">
+            <option value="woocommerce_before_add_to_cart_button" <?php selected($position, 'woocommerce_before_add_to_cart_button'); ?>><?php esc_html_e('Before Add to Cart Button', 'jkm-force-sells'); ?></option>
+            <option value="woocommerce_after_add_to_cart_button" <?php selected($position, 'woocommerce_after_add_to_cart_button'); ?>><?php esc_html_e('After Add to Cart Button', 'jkm-force-sells'); ?></option>
+        </select>
+        <?php
+    }
+
+    public function jkmfs_display_type_field_callback() {
+        $options = get_option('jkmfs_settings');
+        $type = isset($options['display_type']) ? $options['display_type'] : 'list';
+        ?>
+        <select name="jkmfs_settings[display_type]">
+            <option value="list" <?php selected($type, 'list'); ?>><?php esc_html_e('List View', 'jkm-force-sells'); ?></option>
+            <option value="grid" <?php selected($type, 'grid'); ?>><?php esc_html_e('Grid View', 'jkm-force-sells'); ?></option>
+        </select>
+        <?php
+    }
+
+    public function jkmfs_show_images_field_callback() {
+        $options = get_option('jkmfs_settings');
+        $show_images = isset($options['show_images']) ? $options['show_images'] : 'no';
+        ?>
+        <input type="checkbox" name="jkmfs_settings[show_images]" value="yes" <?php checked($show_images, 'yes'); ?> />
+        <label for="jkmfs_settings[show_images]"><?php esc_html_e('Show product images', 'jkm-force-sells'); ?></label>
+        <?php
     }
 }
 endif;
