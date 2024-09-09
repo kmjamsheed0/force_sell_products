@@ -5,7 +5,7 @@
  * Author:      Jamsheed KM
  * Version:     1.0.0
  * Author URI:  https://github.com/kmjamsheed0
- * Plugin URI:  https://github.com/kmjamsheed0
+ * Plugin URI:  https://github.com/kmjamsheed0/jkm-force-sells
  * Text Domain: jkm-force-sells
  * Domain Path: /languages
  * WC requires at least: 4.0.0
