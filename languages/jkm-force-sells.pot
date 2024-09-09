@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-08T07:42:12+00:00\n"
+"POT-Creation-Date: 2024-09-09T19:58:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: jkm-force-sells\n"
@@ -20,9 +20,8 @@ msgid "Force Sell For WooCommerce | Smart Cart Bundles"
 msgstr ""
 
 #. Plugin URI of the plugin
-#. Author URI of the plugin
 #: jkm-force-sells.php
-msgid "https://github.com/kmjamsheed0"
+msgid "https://github.com/kmjamsheed0/jkm-force-sells"
 msgstr ""
 
 #. Description of the plugin
@@ -35,38 +34,93 @@ msgstr ""
 msgid "Jamsheed KM"
 msgstr ""
 
-#: admin/class-jkmfs-admin.php:24
+#. Author URI of the plugin
+#: jkm-force-sells.php
+msgid "https://github.com/kmjamsheed0"
+msgstr ""
+
+#: admin/class-jkmfs-admin.php:26
 msgid "Optional Add-ons"
 msgstr ""
 
-#: admin/class-jkmfs-admin.php:30
-#: admin/class-jkmfs-admin.php:44
-#: admin/class-jkmfs-admin.php:69
-#: admin/class-jkmfs-admin.php:83
+#: admin/class-jkmfs-admin.php:32
+#: admin/class-jkmfs-admin.php:46
+#: admin/class-jkmfs-admin.php:71
+#: admin/class-jkmfs-admin.php:85
 msgid "Search for a product&hellip;"
 msgstr ""
 
-#: admin/class-jkmfs-admin.php:60
-msgid "Add-on product can be removed or its quantity edited independently of the main product in the cart."
+#: admin/class-jkmfs-admin.php:62
+msgid "This product can be removed or its quantity changed independently, without affecting the main item in the cart."
 msgstr ""
 
-#: admin/class-jkmfs-admin.php:63
+#: admin/class-jkmfs-admin.php:65
 msgid "Mandatory Add-ons"
 msgstr ""
 
-#: admin/class-jkmfs-admin.php:100
+#: admin/class-jkmfs-admin.php:102
 msgid "These products are forcefully added to the cart with the main product, and their quantity is synced with the main product."
 msgstr ""
 
-#: public/class-jkmfs-public.php:45
-msgid "This will also add the following products to your cart:"
+#: includes/class-jkmfs.php:79
+#: includes/class-jkmfs.php:80
+#: includes/class-jkmfs.php:88
+msgid "Force Sell Settings"
+msgstr ""
+
+#: includes/class-jkmfs.php:85
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: includes/class-jkmfs.php:106
+msgid "Display Settings"
+msgstr ""
+
+#: includes/class-jkmfs.php:113
+msgid "Display Position"
+msgstr ""
+
+#: includes/class-jkmfs.php:121
+msgid "Display Type"
+msgstr ""
+
+#: includes/class-jkmfs.php:129
+msgid "Show Product Images"
+msgstr ""
+
+#: includes/class-jkmfs.php:137
+msgid "Configure the display settings for force-sell products."
+msgstr ""
+
+#: includes/class-jkmfs.php:145
+msgid "Before Add to Cart Button"
+msgstr ""
+
+#: includes/class-jkmfs.php:146
+msgid "After Add to Cart Button"
+msgstr ""
+
+#: includes/class-jkmfs.php:156
+msgid "List View"
+msgstr ""
+
+#: includes/class-jkmfs.php:157
+msgid "Grid View"
+msgstr ""
+
+#: includes/class-jkmfs.php:167
+msgid "Show product images"
+msgstr ""
+
+#: public/class-jkmfs-public.php:68
+msgid "The following product(s) will also be added to your cart:"
 msgstr ""
 
 #. translators: %s: Product title
-#: public/class-jkmfs-public.php:126
+#: public/class-jkmfs-public.php:160
 msgid "%s will also be removed as they're sold together."
 msgstr ""
 
-#: public/class-jkmfs-public.php:187
+#: public/class-jkmfs-public.php:221
 msgid "Linked to"
 msgstr ""
