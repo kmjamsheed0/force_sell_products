@@ -1,5 +1,4 @@
 .*
-pipelines.yml
 Gruntfile.js
 package.json
 admin/assets/css/jkmfs-admin.css
