@@ -1,43 +1,46 @@
-name: Create and Upload Release
-
+-----
 on:
   push:
     tags:
-      - '*'
+      - "*"
+
+name: Create and Publish Release
+
+permissions:
+  contents: write
 
 jobs:
   build:
+    name: Create Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Install zip and rsync
-        run: sudo apt-get update && sudo apt-get install -y zip rsync
-
-      - name: Prepare Directory
+      
+      - name: Get Repo Name
+        id: get_repo_name
         run: |
-          mkdir jkmfs
-          rsync -ar ./jkmfs/ jkmfs/ --exclude jkmfs
-          rm -rf jkmfs/.gitignore
-          rm -rf jkmfs/.git-ftp-ignore
-          rm -rf jkmfs/.git-ftp.log
-          rm -rf jkmfs/bitbucket-pipelines.yml
-          rm -rf jkmfs/Gruntfile.js
-          rm -rf jkmfs/package.json
-          rm -rf jkmfs/admin/assets/js/inc
-          rm -rf jkmfs/admin/assets/js/jkmfs-admin.js
-          rm -rf jkmfs/admin/assets/css/jkmfs-admin.css
-          rm -rf jkmfs/public/assets/js/inc
-          rm -rf jkmfs/public/assets/js/jkmfs-public.js
-          rm -rf jkmfs/public/assets/css/jkmfs-public.css
+          # Extract repo name from GITHUB_REPOSITORY variable
+          repo_fullname="${{ github.repository }}"
+          repo_name="${repo_fullname##*/}"
+          echo "REPO_NAME=${repo_name}" >> $GITHUB_ENV
 
-      - name: Create ZIP Archive
+      - name: Get Tag Name
+        id: get_tag_name
         run: |
-          zip -r jkmfs-${{ github.ref_name }}.zip jkmfs
+          # Extract tag name from GITHUB_REF
+          tag_name="${{ github.ref }}"
+          tag_name="${tag_name#refs/tags/}"
+          echo "TAG_NAME=${tag_name}" >> $GITHUB_ENV
 
-      - name: Upload ZIP Archive
-        uses: actions/upload-artifact@v3
+      - name: Create Release Archive
+        run: |
+          echo "Repository Name: $REPO_NAME"
+          echo "Tag Name: $TAG_NAME"
+          git archive --format zip --prefix="${REPO_NAME}/" --output "${REPO_NAME}-${TAG_NAME}.zip" HEAD
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: jkmfs-${{ github.ref_name }}.zip
-          path: jkmfs-${{ github.ref_name }}.zip
+          files: "${{ env.REPO_NAME }}-${{ env.TAG_NAME }}.zip"
+-----
