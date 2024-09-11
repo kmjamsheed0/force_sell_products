@@ -25,6 +25,7 @@ class JKMFS {
         $this->define_public_hooks();
         add_action('admin_menu', array($this, 'jkmfs_admin_menu'));
         add_action('admin_init', array($this, 'jkmfs_register_settings'));
+        add_filter('plugin_action_links_'.JKMFS_BASE_NAME, array($this, 'add_settings_link'));
     }
 
     public static function instance() {
@@ -167,5 +168,12 @@ class JKMFS {
         <label for="jkmfs_settings[show_images]"><?php esc_html_e('Show product images', 'jkm-force-sells'); ?></label>
         <?php
     }
+
+    public function add_settings_link($links) {
+        $settings_link = '<a href="' . esc_url(admin_url('edit.php?post_type=product&page=jkmfs_force_sell_settings')) . '">' . __('Settings', 'jkm-force-sells') . '</a>';
+        array_unshift($links, $settings_link);
+        return $links;
+    }
+
 }
 endif;
