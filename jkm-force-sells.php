@@ -8,6 +8,8 @@
  * Plugin URI:  https://github.com/kmjamsheed0/jkm-force-sells
  * Text Domain: jkm-force-sells
  * Domain Path: /languages
+ * License:		GPL-2.0-or-later
+ * License URI:	https://www.gnu.org/licenses/gpl-2.0.html
  * WC requires at least: 4.0.0
  * WC tested up to: 9.2
  */
