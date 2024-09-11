@@ -3,7 +3,7 @@ Contributors: Jamsheed KM
 Donate link: https://github.com/kmjamsheed0/
 Tags: WooCommerce Force Sells, Smart Bundles, Product Add-ons, Automatic Add to Cart, Product Grouping
 Requires at least: 5.0
-Tested up to: 6.1
+Tested up to: 6.7
 Requires PHP: 5.6
 Stable tag: 1.0.0
 License: GPLv2 or later
