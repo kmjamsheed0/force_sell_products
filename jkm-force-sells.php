@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Force Sell For WooCommerce | Smart Cart Bundles
+ * Plugin Name: Force Sells For WooCommerce
  * Description: Automatically add selected products to the cart with a main item, creating smart bundles effortlessly.
  * Author:      Jamsheed KM
  * Version:     1.0.0
