@@ -1,4 +1,4 @@
-=== Force Sells For WooCommerce ===
+=== Force Sells and Smart Bundles for WooCommerce ===
 Contributors: Jamsheed KM
 Donate link: https://github.com/kmjamsheed0/
 Tags: WooCommerce Force Sells, Smart Bundles, Product Add-ons, Automatic Add to Cart, Product Grouping
@@ -12,7 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Add optional or mandatory add-ons to the cart with main items. Create smart bundles that automatically link and sell additional products effortlessly.
 
 == Description ==
-**Force Sells For WooCommerce** allows you to add optional or mandatory add-on products to the cart whenever a main item is added. 
+**Force Sells and Smart Bundles for WooCommerce** allows you to add optional or mandatory add-on products to the cart whenever a main item is added.
 
 - Automatically link and sell additional products with ease.
 - When a main item is added to the cart, its associated linked products are also added.
