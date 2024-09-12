@@ -51,6 +51,12 @@ The plugin is highly developer-friendly, allowing you to easily add more functio
 = How do I configure the display settings? =
 You can configure the display settings by navigating to Products -> Force Sell Settings. Here, you can choose the display style, position, and image options.
 
+= How do I add optional and mandatory add-ons to a product? =
+To add optional and mandatory add-ons, go to the WooCommerce single product edit page. Under the Linked Products section, you'll find two additional fields for managing optional and mandatory add-ons, respectively.
+
+= What happens when I add mandatory add-ons to a product? =
+Mandatory add-ons will always sync with the main product’s quantity, ensuring they are added to the cart whenever the main product is purchased.
+
 = Can I add both optional and mandatory add-ons to a product? =
 Yes, the plugin allows you to add both optional and mandatory add-ons to a main product. Mandatory add-ons will always sync with the main product’s quantity.
 
