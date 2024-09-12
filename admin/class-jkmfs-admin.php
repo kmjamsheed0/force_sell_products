@@ -105,8 +105,9 @@ class JKMFS_Admin {
     }
 
     public function jkmfs_process_extra_product_meta( $post_id, $post ) {
-        // Verify the nonce
-        if ( ! isset( $_POST['jkmfs_product_meta_nonce'] ) || ! wp_verify_nonce( $_POST['jkmfs_product_meta_nonce'], 'jkmfs_save_product_meta' ) ) {
+        $nonce = isset( $_POST['jkmfs_product_meta_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['jkmfs_product_meta_nonce'] ) ) : '';
+
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, 'jkmfs_save_product_meta' ) ) {
             return; // Exit if the nonce is invalid.
         }
         // Load the product object.
