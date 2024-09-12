@@ -121,11 +121,11 @@ class JKMFS_Admin {
             if ( isset( $_POST[ $value['field_name'] ] ) ) {
                 $force_sells = array();
                 // Unslash and sanitize the IDs
-                $ids = wp_unslash( $_POST[ $value['field_name'] ] );
-
-                if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $ids ) ) {
+                if ( version_compare( WC_VERSION, '2.7.0', '>=' ) && is_array( $_POST[ $value['field_name'] ] ) ) {
+                    $ids = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $value['field_name'] ] ) );
                     $ids = array_filter( array_map( 'absint', $ids ) );
                 } else {
+                    $ids = sanitize_text_field( wp_unslash( $_POST[ $value['field_name'] ] ) );
                     $ids = explode( ',', $ids );
                     $ids = array_filter( array_map( 'absint', $ids ) );
                 }
