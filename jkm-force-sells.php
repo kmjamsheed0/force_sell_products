@@ -16,6 +16,14 @@
 
 if(!defined('ABSPATH')){ exit; }
 
+// Add HPOS and Remote Logging compatibility declarations
+add_action('before_woocommerce_init', function() {
+    if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('remote_logging', __FILE__, true);
+    }
+});
+
 if (!function_exists('is_woocommerce_active')){
 	function is_woocommerce_active(){
 	    $active_plugins = (array) get_option('active_plugins', array());
