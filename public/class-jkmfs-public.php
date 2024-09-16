@@ -34,21 +34,22 @@ class JKMFS_Public {
      * 
      */
     public function jkmfs_show_force_sell_products() {
-        global $post;
+        global $product;
+        $p_id = $product ? $product->get_id() : 0 ;
 
         // Get force-sell product IDs associated with the current product
-        $product_ids = JKMFS_Utils::jkmfs_get_force_sell_ids($post->ID, array('normal', 'synced'));
+        $product_ids = JKMFS_Utils::jkmfs_get_force_sell_ids($p_id, array('normal', 'synced'));
         $product_datas = array();
 
         // Check if products exist and avoid duplicate IDs
         foreach (array_values(array_unique($product_ids)) as $product_id) {
-            $product = wc_get_product($product_id);
+            $prd = wc_get_product($product_id);
 
             // Ensure product exists and is not trashed
-            if ($product && $product->exists() && 'trash' !== $product->get_status()) {
+            if ($prd && $prd->exists() && 'trash' !== $prd->get_status()) {
                 $product_datas[$product_id] = array(
-                    'title' => $product->get_name(), // Get product name
-                    'image' => $product->get_image() // Get product image
+                    'title' => $prd->get_name(), // Get product name
+                    'image' => $prd->get_image() // Get product image
                 );
             }
         }
