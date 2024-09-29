@@ -147,5 +147,22 @@ class JKMFS_Admin {
         }
     }
 
+    public function jkmfs_product_form_block_editor_assets() {
+        $debug_mode = apply_filters('jkmfs_debug_mode', false);
+        $suffix = $debug_mode ? '' : '.min';
+
+        wp_enqueue_script(
+            'jkmfs-admin-script', JKMFS_URL . 'admin/assets/js/jkmfs-admin'. $suffix .'.js',  array('wp-blocks', 'wp-element', 'wp-components', 'wp-data', 'wc-blocks','react', 'wc-product-editor'), JKMFS_VERSION, true );
+
+        // Pass localized data for add-ons fields
+        wp_localize_script(
+            'jkmfs-admin-script',
+            'jkmfs_product_data',
+            array(
+                'optional_label' => __( 'Optional Add-ons', 'jkm-force-sells' ),
+                'mandatory_label' => __( 'Mandatory Add-ons', 'jkm-force-sells' ),
+            )
+        );
+    }
 }
 endif;

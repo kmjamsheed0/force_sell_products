@@ -24,6 +24,164 @@ add_action('before_woocommerce_init', function() {
     }
 });
 
+// add_action(
+//     'woocommerce_layout_template_after_instantiation',
+//     function( $layout_template_id, $layout_template_area, $layout_template ) {
+//         // Get the 'linked_products' group
+//         $linked_products_group = $layout_template->get_group_by_id( 'linked-products' );
+
+//         if ( $linked_products_group ) {
+
+//             // Create a new section after 'product-linked-cross-sells-section'
+//             $custom_section = $linked_products_group->add_section(
+//                 array(
+//                     'id'         => 'custom-force-sell-addons',
+//                     'order'      => 15,
+//                     'attributes' => array(
+//                         'title'       => __( 'Force Sell Add-ons', 'jkm-force-sells' ),
+//                         'description' => __( 'Optional and mandatory add-ons for this product', 'jkm-force-sells' ),
+//                     ),
+//                 )
+//             );
+
+//             // Add custom blocks for Optional and Mandatory Add-ons
+//             $custom_section->add_block(
+//                 [
+//                     'id'         => 'optional-add-ons',
+//                     'blockName'  => 'jkmfs/optional-add-ons-field',
+//                     'attributes' => [],
+//                 ]
+//             );
+
+//             $custom_section->add_block(
+//                 [
+//                     'id'         => 'mandatory-add-ons',
+//                     'blockName'  => 'jkmfs/mandatory-add-ons-field',
+//                     'attributes' => [],
+//                 ]
+//             );
+//         }
+//     },
+//     10,
+//     3
+// );
+
+
+function jkmfs_register_meta_fields() {
+    $meta_args = array(
+        'show_in_rest' => array(
+            'schema' => array(
+                'type'  => 'array',
+                'items' => array(
+                    'type' => 'integer',
+                ),
+            ),
+        ),
+        'single'       => true,
+        'type'         => 'array',
+        'default'      => array(),
+    );
+
+    register_post_meta('product', 'jkm_force_sell_ids', $meta_args);
+    register_post_meta('product', 'jkm_force_sell_synced_ids', $meta_args);
+}
+add_action('init', 'jkmfs_register_meta_fields');
+
+
+function jkmfs_add_custom_fields_to_product_form($layout_template_id, $layout_template_area, $layout_template) {
+    $linked_products_group = $layout_template->get_group_by_id('linked-products');
+    if ($linked_products_group) {
+        $custom_section = $linked_products_group->add_section(
+            array(
+                'id'         => 'custom-force-sell-addons',
+                'order'      => 3,
+                'attributes' => array(
+                    'title'       => __('Force Sell Add-ons', 'jkm-force-sells'),
+                    'description' => __('Optional and mandatory add-ons for this product', 'jkm-force-sells'),
+                ),
+            )
+        );
+        $custom_section->add_block(
+            [
+                'id'         => 'optional-add-ons',
+                'blockName'  => 'jkmfs/optional-add-ons-field',
+                'attributes' => [],
+            ]
+        );
+        $custom_section->add_block(
+            [
+                'id'         => 'mandatory-add-ons',
+                'blockName'  => 'jkmfs/mandatory-add-ons-field',
+                'attributes' => [],
+            ]
+        );
+    }
+}
+add_action('woocommerce_layout_template_after_instantiation', 'jkmfs_add_custom_fields_to_product_form', 10, 3);
+
+// Add compatibility with classic editor
+function jkmfs_add_custom_fields_to_classic_editor() {
+    global $post;
+    
+    if ('product' !== $post->post_type) {
+        return;
+    }
+
+    wp_nonce_field('jkmfs_save_product_meta', 'jkmfs_product_meta_nonce');
+
+    $optional_addons = get_post_meta($post->ID, 'jkm_force_sell_ids', true);
+    $mandatory_addons = get_post_meta($post->ID, 'jkm_force_sell_synced_ids', true);
+
+    woocommerce_wp_select_multiple(
+        array(
+            'id' => 'jkm_force_sell_ids',
+            'label' => __('Optional Add-ons', 'jkm-force-sells'),
+            'description' => __('Select optional add-on products', 'jkm-force-sells'),
+            'value' => $optional_addons,
+            'options' => jkmfs_get_product_options(),
+        )
+    );
+
+    woocommerce_wp_select_multiple(
+        array(
+            'id' => 'jkm_force_sell_synced_ids',
+            'label' => __('Mandatory Add-ons', 'jkm-force-sells'),
+            'description' => __('Select mandatory add-on products', 'jkm-force-sells'),
+            'value' => $mandatory_addons,
+            'options' => jkmfs_get_product_options(),
+        )
+    );
+}
+// add_action('woocommerce_product_options_related', 'jkmfs_add_custom_fields_to_classic_editor');
+
+function jkmfs_get_product_options() {
+    $products = wc_get_products(array('status' => 'publish', 'limit' => -1));
+    $options = array();
+    foreach ($products as $product) {
+        $options[$product->get_id()] = $product->get_name();
+    }
+    return $options;
+}
+
+function jkmfs_save_product_meta($post_id) {
+    if (!isset($_POST['jkmfs_product_meta_nonce']) || !wp_verify_nonce($_POST['jkmfs_product_meta_nonce'], 'jkmfs_save_product_meta')) {
+        return;
+    }
+
+    $fields = array('jkm_force_sell_ids', 'jkm_force_sell_synced_ids');
+
+    foreach ($fields as $field) {
+        if (isset($_POST[$field])) {
+            $product_ids = array_map('intval', (array) $_POST[$field]);
+            update_post_meta($post_id, $field, $product_ids);
+        } else {
+            delete_post_meta($post_id, $field);
+        }
+    }
+}
+// add_action('woocommerce_process_product_meta', 'jkmfs_save_product_meta');
+
+
 if (!function_exists('is_woocommerce_active')){
 	function is_woocommerce_active(){
 	    $active_plugins = (array) get_option('active_plugins', array());

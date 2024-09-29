@@ -45,6 +45,8 @@ class JKMFS {
         $admin = new JKMFS_Admin();
         add_action( 'woocommerce_product_options_related', array( $admin, 'jkmfs_write_panel_tab' ) );
         add_action( 'woocommerce_process_product_meta', array( $admin, 'jkmfs_process_extra_product_meta' ), 1, 2 );
+        add_action( 'enqueue_block_editor_assets', array( $admin, 'jkmfs_product_form_block_editor_assets') );
+        // add_action('woocommerce_blocks_enqueue_scripts', array($admin, 'jkmfs_product_form_block_editor_assets'));
     }
 
     private function define_public_hooks() {
