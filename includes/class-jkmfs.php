@@ -83,7 +83,7 @@ class JKMFS {
 
     public function output_settings() {
         if (!current_user_can('manage_options')) {
-            wp_die( __( 'You do not have sufficient permissions to access this page.','jkm-force-sells'));
+            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'jkm-force-sells' ) );
         }
         echo '<div class="wrap">';
         echo '<h2>' . esc_html__('Force Sell Settings', 'jkm-force-sells') . '</h2>';
