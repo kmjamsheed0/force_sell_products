@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-12T20:46:04+00:00\n"
+"POT-Creation-Date: 2024-10-12T08:36:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: jkm-force-sells\n"
@@ -116,15 +116,15 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: public/class-jkmfs-public.php:68
+#: public/class-jkmfs-public.php:69
 msgid "The following product(s) will also be added to your cart:"
 msgstr ""
 
 #. translators: %s: Product title
-#: public/class-jkmfs-public.php:160
+#: public/class-jkmfs-public.php:163
 msgid "%s will also be removed as they're sold together."
 msgstr ""
 
-#: public/class-jkmfs-public.php:221
+#: public/class-jkmfs-public.php:224
 msgid "Linked to"
 msgstr ""
