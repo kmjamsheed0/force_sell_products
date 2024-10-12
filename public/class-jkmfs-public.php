@@ -25,7 +25,7 @@ class JKMFS_Public {
     }
     
     private function enqueue_styles($suffix) {
-        wp_enqueue_style('jkmfs-public-style', JKMFS_URL . 'public/assets/css/jkmfs-public'. $suffix .'.css', JKMFS_VERSION);
+        wp_enqueue_style('jkmfs-public-style', JKMFS_URL . 'public/assets/css/jkmfs-public'. $suffix .'.css',array(), JKMFS_VERSION);
     }
 
     /**
@@ -74,8 +74,9 @@ class JKMFS_Public {
                     echo '<div class="jkmfs-force-sells-grid">';
                     foreach ($product_datas as $data) {
                         echo '<div class="jkmfs-force-sell-item">';
-                        if ($show_images === 'yes' && $data['image']) {
-                            echo '<div class="jkmfs-force-sell-image">' . $data['image'] . '</div>';
+                        if ($show_images === 'yes' && !empty($data['image'])) {
+
+                            echo '<div class="jkmfs-force-sell-image">' . wp_kses_post($data['image']) . '</div>';
                         }
                         echo '<div class="jkmfs-force-sell-title">' . esc_html($data['title']) . '</div>'; // Title below image
                         echo '</div>';
@@ -88,8 +89,9 @@ class JKMFS_Public {
                     echo '<ul class="jkmfs-force-sells-list">';
                     foreach ($product_datas as $data) {
                         echo '<li class="jkmfs-force-sell-item">';
-                        if ($show_images === 'yes' && $data['image']) {
-                            echo '<div class="jkmfs-force-sell-image">' . $data['image'] . '</div>';
+                        if ($show_images === 'yes' && !empty($data['image'])) {
+
+                            echo '<div class="jkmfs-force-sell-image">' . wp_kses_post($data['image']) . '</div>';
                         }
                         echo '<div class="jkmfs-force-sell-title">' . esc_html($data['title']) . '</div>'; // Title next to image
                         echo '</li>';
@@ -158,7 +160,7 @@ class JKMFS_Public {
                     if ( empty( $result ) && apply_filters( 'jkmfs_force_sell_disallow_no_stock', true ) ) {
                         WC()->cart->remove_cart_item( $cart_item_key );
                         /* translators: %s: Product title */
-                        throw new Exception( sprintf( __( '%s will also be removed as they\'re sold together.', 'jkm-force-sells' ), $product->get_title() ) );
+                        throw new Exception( sprintf( esc_html__( '%s will also be removed as they\'re sold together.', 'jkm-force-sells' ),esc_html( $product->get_title() )) );
                     }
                 }
             }
