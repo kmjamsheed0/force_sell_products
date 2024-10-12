@@ -56,10 +56,10 @@ class JKMFS_Admin {
                     $json_ids_data = wp_json_encode( $json_ids );
                     $json_ids_data = function_exists( 'wc_esc_json' ) ? wc_esc_json( $json_ids_data ) : _wp_specialchars( $json_ids_data, ENT_QUOTES, 'UTF-8', true );
 
-                    esc_attr_e($json_ids_data);
+                    echo esc_attr($json_ids_data);
                     ?>" value="<?php echo esc_attr( implode( ',', array_keys( $json_ids ) ) ); ?>" />
             <?php } ?>
-            <?php echo wc_help_tip( esc_attr__( 'This product can be removed or its quantity changed independently, without affecting the main item in the cart.', 'jkm-force-sells' ) ); ?>
+            <?php echo wp_kses_post( wc_help_tip( __( 'This product can be removed or its quantity changed independently, without affecting the main item in the cart.', 'jkm-force-sells' ) ) ); ?>
         </p>
         <p class="form-field">
             <label for="jkm_force_sell_synced_ids"><?php esc_html_e( 'Mandatory Add-ons', 'jkm-force-sells' ); ?></label>
@@ -99,7 +99,7 @@ class JKMFS_Admin {
                 echo esc_attr($json_ids_data);
                 ?>" value="<?php echo esc_attr( implode( ',', array_keys( $json_ids ) ) ); ?>" />
             <?php } ?>
-            <?php echo wc_help_tip( esc_attr__( 'These products are forcefully added to the cart with the main product, and their quantity is synced with the main product.', 'jkm-force-sells' ) ); ?>
+            <?php echo wp_kses_post( wc_help_tip( __( 'These products are forcefully added to the cart with the main product, and their quantity is synced with the main product.', 'jkm-force-sells' ) ) ); ?>
         </p>
         <?php
     }
