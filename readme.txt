@@ -63,6 +63,9 @@ Yes, the plugin allows you to add both optional and mandatory add-ons to a main 
 = Is this plugin developer-friendly? =
 Yes, the plugin is highly developer-friendly, providing hooks and filters to extend its functionality.
 
+== Screenshots ==
+1. Add force sell products.
+
 == Changelog ==
 
 = 1.0.0 =
