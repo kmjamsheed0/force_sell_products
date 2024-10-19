@@ -1,7 +1,7 @@
 === Force Sells and Smart Bundles for WooCommerce ===
-Contributors: Jamsheed KM
+Contributors: jamsheedkm
 Donate link: https://github.com/kmjamsheed0/
-Tags: WooCommerce Force Sells, Smart Bundles, Product Add-ons, Automatic Add to Cart, Product Grouping
+Tags: Force Sells, Smart Bundles, Product Add-ons, Automatic Add to Cart, Product Grouping
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 5.6
