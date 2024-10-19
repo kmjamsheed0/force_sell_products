@@ -61,7 +61,15 @@ Mandatory add-ons will always sync with the main product’s quantity, ensuring 
 Yes, the plugin allows you to add both optional and mandatory add-ons to a main product. Mandatory add-ons will always sync with the main product’s quantity.
 
 = Is this plugin developer-friendly? =
-Yes, the plugin is highly developer-friendly, providing hooks and filters to extend its functionality.
+Yes, the plugin is highly developer-friendly, providing hooks and filters to extend its functionality. Below is a list of some basic filters available for customization:
+
+- `jkmfs_products_display_hook_name`: Customize the hook name for displaying force sell products.
+- `jkmfs_products_display_hook_priority`: Customize the priority of the display hook.
+- `jkmfs_products_display_type`: Control the display type (e.g., list, grid) for force sell products.
+- `jkmfs_show_products_images`: Enable or disable the display of product images for force sell products.
+- `jkmfs_force_sell_add_to_cart_product`: Customize parameters for adding a force sell product to the cart.
+- `jkmfs_force_sell_disallow_no_stock`: Control whether out-of-stock products are disallowed for force sell.
+- `jkmfs_force_sell_update_quantity`: Customize the quantity of force sell products in the cart.
 
 == Screenshots ==
 1. Add force sell products.
