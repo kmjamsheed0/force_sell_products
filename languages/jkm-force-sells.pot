@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-12T08:36:18+00:00\n"
+"POT-Creation-Date: 2024-11-03T11:25:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: jkm-force-sells\n"
 
 #. Plugin Name of the plugin
@@ -89,42 +89,50 @@ msgid "Show Product Images"
 msgstr ""
 
 #: includes/class-jkmfs.php:138
-msgid "Configure the display settings for force-sell products."
+msgid "Show Product Prices"
 msgstr ""
 
 #: includes/class-jkmfs.php:146
+msgid "Configure the display settings for force-sell products."
+msgstr ""
+
+#: includes/class-jkmfs.php:154
 msgid "Before Add to Cart Button"
 msgstr ""
 
-#: includes/class-jkmfs.php:147
+#: includes/class-jkmfs.php:155
 msgid "After Add to Cart Button"
 msgstr ""
 
-#: includes/class-jkmfs.php:157
+#: includes/class-jkmfs.php:165
 msgid "List View"
 msgstr ""
 
-#: includes/class-jkmfs.php:158
+#: includes/class-jkmfs.php:166
 msgid "Grid View"
 msgstr ""
 
-#: includes/class-jkmfs.php:168
+#: includes/class-jkmfs.php:176
 msgid "Show product images"
 msgstr ""
 
-#: includes/class-jkmfs.php:173
+#: includes/class-jkmfs.php:185
+msgid "Show product prices"
+msgstr ""
+
+#: includes/class-jkmfs.php:190
 msgid "Settings"
 msgstr ""
 
-#: public/class-jkmfs-public.php:69
+#: public/class-jkmfs-public.php:72
 msgid "The following product(s) will also be added to your cart:"
 msgstr ""
 
 #. translators: %s: Product title
-#: public/class-jkmfs-public.php:163
+#: public/class-jkmfs-public.php:190
 msgid "%s will also be removed as they're sold together."
 msgstr ""
 
-#: public/class-jkmfs-public.php:224
+#: public/class-jkmfs-public.php:251
 msgid "Linked to"
 msgstr ""

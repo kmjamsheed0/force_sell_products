@@ -6,7 +6,7 @@
  * @since    1.0.0
  *
  * @package    jkm-force-sells
- * @subpackage jkm-force-sells/admin/utils
+ * @subpackage jkm-force-sells/includes/utils
  */
 
 if(!defined('ABSPATH')){ exit; }
