@@ -28,6 +28,7 @@ The plugin is highly developer-friendly, allowing you to easily add more functio
 **1. Display Styles:**
 - Choose to display force-sell items in a list or grid view.
 - Option to show or hide force-sell product images.
+- Option to show or hide force-sell product prices.
 
 **2. Additional Display Positions:**
 - Display force-sell products before or after the "Add to Cart" button.
@@ -67,12 +68,15 @@ Yes, the plugin is highly developer-friendly, providing hooks and filters to ext
 - `jkmfs_products_display_hook_priority`: Customize the priority of the display hook.
 - `jkmfs_products_display_type`: Control the display type (e.g., list, grid) for force sell products.
 - `jkmfs_show_products_images`: Enable or disable the display of product images for force sell products.
+- `jkmfs_show_products_prices`: Enable or disable the display of product prices for force sell products.
 - `jkmfs_force_sell_add_to_cart_product`: Customize parameters for adding a force sell product to the cart.
 - `jkmfs_force_sell_disallow_no_stock`: Control whether out-of-stock products are disallowed for force sell.
 - `jkmfs_force_sell_update_quantity`: Customize the quantity of force sell products in the cart.
 
 == Screenshots ==
 1. Add force sell products.
+2. List View.
+3. Grid View.
 
 == Changelog ==
 
