@@ -3,7 +3,7 @@
  * Plugin Name: Force Sells and Smart Bundles for WooCommerce
  * Description: Automatically add selected products to the cart with a main item, creating smart bundles effortlessly.
  * Author:      Jamsheed KM
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author URI:  https://github.com/kmjamsheed0
  * Plugin URI:  https://github.com/kmjamsheed0/jkm-force-sells
  * Text Domain: jkm-force-sells
@@ -44,7 +44,7 @@ if(is_woocommerce_active()) {
 			}
 
 			public function init() {
-				define('JKMFS_VERSION', '1.0.0');
+				define('JKMFS_VERSION', '1.1.0');
 				!defined('JKMFS_BASE_NAME') && define('JKMFS_BASE_NAME', plugin_basename( __FILE__ ));
 				!defined('JKMFS_PATH') && define('JKMFS_PATH', plugin_dir_path( __FILE__ ));
 				!defined('JKMFS_URL') && define('JKMFS_URL', plugins_url( '/', __FILE__ ));
