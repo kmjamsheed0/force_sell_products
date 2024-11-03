@@ -49,7 +49,8 @@ class JKMFS_Public {
             if ($prd && $prd->exists() && 'trash' !== $prd->get_status()) {
                 $product_datas[$product_id] = array(
                     'title' => $prd->get_name(), // Get product name
-                    'image' => $prd->get_image() // Get product image
+                    'image' => $prd->get_image(), // Get product image
+                    'price' => $prd->get_price_html()  // Get formatted price HTML
                 );
             }
         }
@@ -59,10 +60,12 @@ class JKMFS_Public {
             $options = get_option('jkmfs_settings');
             $view_type = isset($options['display_type']) ? $options['display_type'] : 'list';
             $show_images = isset($options['show_images']) ? $options['show_images'] : 'no';
+            $show_price = isset($options['show_price']) ? $options['show_price'] : 'no';
 
             // Apply filters to allow customization of these settings
             $view_type = apply_filters('jkmfs_products_display_type', $view_type);
             $show_images = apply_filters('jkmfs_show_products_images', $show_images);
+            $show_price = apply_filters('jkmfs_show_products_prices', $show_price);
 
             echo '<div class="clear"></div>';
             echo '<div class="jkmfs-wc-force-sells">';
@@ -74,11 +77,23 @@ class JKMFS_Public {
                     echo '<div class="jkmfs-force-sells-grid">';
                     foreach ($product_datas as $data) {
                         echo '<div class="jkmfs-force-sell-item">';
+
+                        // Display product image
                         if ($show_images === 'yes' && !empty($data['image'])) {
 
                             echo '<div class="jkmfs-force-sell-image">' . wp_kses_post($data['image']) . '</div>';
                         }
+
+                        echo '<div class="jkmfs-force-sell-title-wrapper">';
+                        //Display title
                         echo '<div class="jkmfs-force-sell-title">' . esc_html($data['title']) . '</div>'; // Title below image
+
+                        // Display product price
+                        if ($show_price === 'yes' && !empty($data['price'])) {
+                            echo '<div class="jkmfs-force-sell-price">(' . wp_kses_post($data['price']) . ')</div>';
+                        }
+
+                        echo '</div>';
                         echo '</div>';
                     }
                     echo '</div>';
@@ -89,11 +104,23 @@ class JKMFS_Public {
                     echo '<ul class="jkmfs-force-sells-list">';
                     foreach ($product_datas as $data) {
                         echo '<li class="jkmfs-force-sell-item">';
+
+                        // Display product image
                         if ($show_images === 'yes' && !empty($data['image'])) {
 
                             echo '<div class="jkmfs-force-sell-image">' . wp_kses_post($data['image']) . '</div>';
                         }
+
+                        echo '<div class="jkmfs-force-sell-title-wrapper">';
+                        // Display product title
                         echo '<div class="jkmfs-force-sell-title">' . esc_html($data['title']) . '</div>'; // Title next to image
+
+                        // Display product price
+                        if ($show_price === 'yes' && !empty($data['price'])) {
+                            echo '<div class="jkmfs-force-sell-price">(' . wp_kses_post($data['price']) . ')</div>';
+                        }
+
+                        echo '</div>';
                         echo '</li>';
                     }
                     echo '</ul>';

@@ -135,7 +135,7 @@ class JKMFS {
 
         add_settings_field(
             'jkmfs_show_price',
-            __('Show Product Price', 'jkm-force-sells'),
+            __('Show Product Prices', 'jkm-force-sells'),
             array($this, 'jkmfs_show_price_field_callback'),
             'jkmfs_force_sell_settings',
             'jkmfs_display_settings'
@@ -182,7 +182,7 @@ class JKMFS {
         $show_price = isset($options['show_price']) ? $options['show_price'] : 'no';
         ?>
         <input type="checkbox" name="jkmfs_settings[show_price]" value="yes" <?php checked($show_price, 'yes'); ?> />
-        <label for="jkmfs_settings[show_price]"><?php esc_html_e('Show product price', 'jkm-force-sells'); ?></label>
+        <label for="jkmfs_settings[show_price]"><?php esc_html_e('Show product prices', 'jkm-force-sells'); ?></label>
         <?php
     }
 
