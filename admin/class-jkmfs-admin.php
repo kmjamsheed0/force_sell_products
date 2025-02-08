@@ -147,5 +147,15 @@ class JKMFS_Admin {
         }
     }
 
+    public function enqueue_admin_styles_and_scripts($hook) {
+        if ($hook !== 'product_page_jkmfs_force_sell_settings') {
+            return;
+        }
+        $debug_mode = apply_filters('jkmfs_debug_mode', false);
+        $suffix = $debug_mode ? '' : '.min';
+
+        wp_enqueue_style('jkmfs-admin-style', JKMFS_URL . 'admin/assets/css/jkmfs-admin'. $suffix .'.css',array(), JKMFS_VERSION);
+    }
+
 }
 endif;
