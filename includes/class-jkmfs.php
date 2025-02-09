@@ -45,6 +45,7 @@ class JKMFS {
         $admin = new JKMFS_Admin();
         add_action( 'woocommerce_product_options_related', array( $admin, 'jkmfs_write_panel_tab' ) );
         add_action( 'woocommerce_process_product_meta', array( $admin, 'jkmfs_process_extra_product_meta' ), 1, 2 );
+        add_action( 'admin_enqueue_scripts', array($admin, 'enqueue_admin_styles_and_scripts') );
     }
 
     private function define_public_hooks() {
@@ -140,6 +141,22 @@ class JKMFS {
             'jkmfs_force_sell_settings',
             'jkmfs_display_settings'
         );
+
+        add_settings_section(
+            'jkmfs_other_settings',
+            __('Other Settings', 'jkm-force-sells'),
+            null,
+            'jkmfs_force_sell_settings'
+        );
+
+        add_settings_field(
+            'jkmfs_custom_message',
+              __('Custom Message', 'jkm-force-sells') .
+               ' <span class="jkmfs-tooltip-icon dashicons dashicons-editor-help" data-tooltip="' . esc_attr__('Leave blank for the default message.', 'jkm-force-sells') . '"></span>',
+            array($this, 'jkmfs_custom_message_field_callback'),
+            'jkmfs_force_sell_settings',
+            'jkmfs_other_settings'
+        );
     }
 
     public function jkmfs_display_settings_section_callback() {
@@ -183,6 +200,20 @@ class JKMFS {
         ?>
         <input type="checkbox" name="jkmfs_settings[show_price]" value="yes" <?php checked($show_price, 'yes'); ?> />
         <label for="jkmfs_settings[show_price]"><?php esc_html_e('Show product prices', 'jkm-force-sells'); ?></label>
+        <?php
+    }
+
+    public function jkmfs_custom_message_field_callback() {
+        $options = get_option('jkmfs_settings');
+        $custom_message = isset($options['custom_message_text']) ? $options['custom_message_text'] : '';
+        ?>
+        <textarea 
+            name="jkmfs_settings[custom_message_text]" 
+            id="jkmfs_settings_custom_message_text" 
+            rows="4" 
+            cols="50" 
+            placeholder="<?php esc_attr_e('The following product(s) will also be added to your cart:', 'jkm-force-sells'); ?>"
+        ><?php echo esc_textarea($custom_message); ?></textarea>
         <?php
     }
 

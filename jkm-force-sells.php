@@ -48,7 +48,7 @@ if(is_woocommerce_active()) {
 				!defined('JKMFS_BASE_NAME') && define('JKMFS_BASE_NAME', plugin_basename( __FILE__ ));
 				!defined('JKMFS_PATH') && define('JKMFS_PATH', plugin_dir_path( __FILE__ ));
 				!defined('JKMFS_URL') && define('JKMFS_URL', plugins_url( '/', __FILE__ ));
-				!defined('JKMFS_ASSETS_URL') && define('JKMFS_ASSETS_URL', JKMFS_URL .'assets/');
+				// !defined('JKMFS_ASSETS_URL') && define('JKMFS_ASSETS_URL', JKMFS_URL .'assets/');
 
 				$this->load_plugin_textdomain();
 
