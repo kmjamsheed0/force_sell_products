@@ -61,15 +61,17 @@ class JKMFS_Public {
             $view_type = isset($options['display_type']) ? $options['display_type'] : 'list';
             $show_images = isset($options['show_images']) ? $options['show_images'] : 'no';
             $show_price = isset($options['show_price']) ? $options['show_price'] : 'no';
+            $custom_message = isset($options['custom_message_text']) && !empty($options['custom_message_text']) ? $options['custom_message_text'] : __('The following product(s) will also be added to your cart:', 'jkm-force-sells');
 
             // Apply filters to allow customization of these settings
             $view_type = apply_filters('jkmfs_products_display_type', $view_type);
             $show_images = apply_filters('jkmfs_show_products_images', $show_images);
             $show_price = apply_filters('jkmfs_show_products_prices', $show_price);
+            $custom_message = apply_filters('jkmfs_modify_custom_message', $custom_message);
 
             echo '<div class="clear"></div>';
             echo '<div class="jkmfs-wc-force-sells">';
-            echo '<p>' . esc_html__('The following product(s) will also be added to your cart:', 'jkm-force-sells') . '</p>';
+            echo '<p>' . wp_kses_post($custom_message, 'jkm-force-sells') . '</p>';
 
             // Switch case to handle different view types
             switch ($view_type) {
