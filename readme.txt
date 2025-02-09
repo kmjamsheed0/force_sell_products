@@ -1,11 +1,11 @@
 === Force Sells and Smart Bundles for WooCommerce ===
 Contributors: jamsheedkm
 Donate link: https://github.com/kmjamsheed0/
-Tags: Force Sells, Smart Bundles, Product Add-ons, Automatic Add to Cart, Product Grouping
+Tags: force-sells, smart-bundles, product-add-ons, automatic-add-to-cart, product-grouping
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 5.6
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,6 +29,7 @@ The plugin is highly developer-friendly, allowing you to easily add more functio
 - Choose to display force-sell items in a list or grid view.
 - Option to show or hide force-sell product images.
 - Option to show or hide force-sell product prices.
+- Add custom message on the product page.
 
 **2. Additional Display Positions:**
 - Display force-sell products before or after the "Add to Cart" button.
@@ -72,6 +73,7 @@ Yes, the plugin is highly developer-friendly, providing hooks and filters to ext
 - `jkmfs_force_sell_add_to_cart_product`: Customize parameters for adding a force sell product to the cart.
 - `jkmfs_force_sell_disallow_no_stock`: Control whether out-of-stock products are disallowed for force sell.
 - `jkmfs_force_sell_update_quantity`: Customize the quantity of force sell products in the cart.
+- `jkmfs_modify_custom_message`: Modify the custom message on product page.
 
 == Screenshots ==
 1. Add force sell products.
@@ -79,6 +81,10 @@ Yes, the plugin is highly developer-friendly, providing hooks and filters to ext
 3. Grid View.
 
 == Changelog ==
+
+= 1.1.1 =
+* Added: New feature to add a custom message on the product page.
+* Added: Compatibility with WooCommerce 9.7.
 
 = 1.1.0 =
 * Added: New feature to display product price of force-selling products.
@@ -93,5 +99,5 @@ Yes, the plugin is highly developer-friendly, providing hooks and filters to ext
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Initial release.
+= 1.1.1 =
+New feature update to add a custom message on the product page.
